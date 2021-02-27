@@ -1,18 +1,34 @@
-const plus = document.querySelector('.js-plus');
-const minus = document.querySelector('.js-minus');
+import { createStore } from 'redux'
+
+const plusTag = document.querySelector('.js-plus');
+const minusTag = document.querySelector('.js-minus');
 const countTag = document.querySelector('.js-count');
 
-let count = 0;
+const add = 'add';
+const minus = 'minus';
 
-const updateTxt = () => {
-  countTag.innerHTML = count;
+const counter = (state = 0, action) => {
+  switch (action.type) {
+    case add:
+      return state + 1;
+    case minus:
+      return state - 1;
+    default:
+      return state;
+  }
 }
 
-plus.addEventListener('click', () => {
-  count++;
-  updateTxt();
+let store = createStore(counter);
+
+store.subscribe(() => updateTxt(store.getState()))
+
+const updateTxt = (txt) => {
+  countTag.innerHTML = txt;
+}
+
+plusTag.addEventListener('click', () => {
+  store.dispatch({ type: add })
 });
-minus.addEventListener('click', () => {
-  count--;
-  updateTxt();
+minusTag.addEventListener('click', () => {
+  store.dispatch({ type: minus })
 });
