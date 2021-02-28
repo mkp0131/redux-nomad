@@ -1,34 +1,22 @@
-import { createStore } from 'redux'
+const formTag = document.querySelector(".js-form");
+const inputTag = document.querySelector(".js-input");
+const listTag = document.querySelector(".js-list");
+const todoList = [];
 
-const plusTag = document.querySelector('.js-plus');
-const minusTag = document.querySelector('.js-minus');
-const countTag = document.querySelector('.js-count');
+const updateList = () => {
+  const items = todoList.map((item) => {
+    return `<li>${item}</li>`;
+  });
+  console.log("items", items);
+  listTag.innerHTML = items.join("");
+};
 
-const add = 'add';
-const minus = 'minus';
+const addList = (e) => {
+  e.preventDefault();
+  const value = inputTag.value;
+  todoList.push(value);
+  updateList();
+  inputTag.value = "";
+};
 
-const counter = (state = 0, action) => {
-  switch (action.type) {
-    case add:
-      return state + 1;
-    case minus:
-      return state - 1;
-    default:
-      return state;
-  }
-}
-
-let store = createStore(counter);
-
-store.subscribe(() => updateTxt(store.getState()))
-
-const updateTxt = (txt) => {
-  countTag.innerHTML = txt;
-}
-
-plusTag.addEventListener('click', () => {
-  store.dispatch({ type: add })
-});
-minusTag.addEventListener('click', () => {
-  store.dispatch({ type: minus })
-});
+formTag.addEventListener("submit", addList);
