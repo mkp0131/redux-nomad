@@ -1,6 +1,9 @@
 import { useState } from "react";
+import { connect } from "react-redux";
+import { addTodo, removeTodo } from "../store";
+import Todo from "../components/Todo";
 
-const Home = () => {
+const Home = ({ toDos }) => {
   const [todo, setTody] = useState("");
 
   const onChange = (e) => {
@@ -13,7 +16,8 @@ const Home = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    console.log("submit");
+    addTodo(todo);
+    setTody("");
   };
 
   return (
@@ -23,8 +27,22 @@ const Home = () => {
         <input value={todo} onChange={onChange} />
         <button>기록</button>
       </form>
+      <ul>
+        {toDos.map((todo) => (
+          <Todo
+            key={todo.id}
+            id={todo.id}
+            todo={todo.todo}
+            removeTodo={removeTodo}
+          />
+        ))}
+      </ul>
     </>
   );
 };
 
-export default Home;
+function mapStateToProps(state) {
+  return { toDos: state };
+}
+
+export default connect(mapStateToProps)(Home);
