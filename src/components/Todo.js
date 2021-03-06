@@ -1,20 +1,23 @@
-import { useState } from "react";
-import { addTodo, removeTodo } from "../store";
+import React from "react";
+import { Link } from "react-router-dom";
+import { connect } from "react-redux";
+import { actionCreators } from "../store";
 
-const todo = ({ id, todo }) => {
-  const onClick = () => {
-    console.log("#", id);
-    removeTodo(id);
-  };
-
+const Todo = ({ id, todo, removeTodo }) => {
   return (
     <>
       <li id={id}>
-        {todo}
-        <button onClick={onClick}>삭제</button>
+        <Link to={`/${id}`}>{todo}</Link>
+        <button onClick={removeTodo}>삭제</button>
       </li>
     </>
   );
 };
 
-export default todo;
+const mapDispatchToProps = (dispatch, ownProps) => {
+  return {
+    removeTodo: () => dispatch(actionCreators.removeTodo(ownProps.id)),
+  };
+};
+
+export default connect(null, mapDispatchToProps)(Todo);

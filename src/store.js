@@ -13,13 +13,17 @@ const todoReducer = (state = [], action) => {
 
 const store = createStore(todoReducer);
 
-export const addTodo = (txt) => {
-  return store.dispatch({ type: "add", txt: txt });
+const addTodo = (txt) => {
+  return { type: "add", txt: txt };
 };
 
-export const removeTodo = (id) => {
-  console.log("id", id);
-  return store.dispatch({ type: "remove", id: id });
+const removeTodo = (id) => {
+  return { type: "remove", id: id };
+};
+
+export const actionCreators = {
+  addTodo,
+  removeTodo,
 };
 
 export default store;
